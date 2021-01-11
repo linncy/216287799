@@ -1,5 +1,4 @@
 package eecs2011.project;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigInteger;
@@ -27,8 +26,9 @@ public class Solution {
 
 
     public Solution(){
-        try {
+
             //todo: make sure to read from system.in in real version
+            File f =  new File("valid_100");
             Scanner input = new Scanner(System.in);
 
             visited = BigInteger.ZERO;
@@ -80,7 +80,7 @@ public class Solution {
             }
 
 
-        }catch (FileNotFoundException e){System.out.println("file not found");}
+
     }
 
     public static void prBin(BigInteger q){
@@ -207,14 +207,10 @@ public class Solution {
 
 
         for(Integer i: flat){
-            System.out.println("Operating on: " + i);
-            System.out.println("Vmatrix = ");
-            prBin(vmatrix[i]);
             max = 0;;
             while ((current = vmatrix[i].getLowestSetBit()) != -1){
                 vmatrix[i] = vmatrix[i].clearBit(current);
                 current = n + 1 - current;
-                System.out.println(rt[current]);
                 if(paths[current] + rt[current] > max){
                     max = paths[current] + rt[current];
 
@@ -223,7 +219,6 @@ public class Solution {
             paths[i] = max;
         }
 
-        System.out.println("paths");
         for(int i=1; i<n+1; i++){
             System.out.println(i + " " + paths[i]);
         }
@@ -266,6 +261,8 @@ public class Solution {
     /**
      * Solution to Part 4 (optional)
      */
+    //There are several small
+    // functional changes to schedule_2. if this these are not acceptable, then just run the old version
     public void schedule_2() {
         int[] epaths = new int[n+2];
         int[] dpaths = new int[n+2];
@@ -284,13 +281,10 @@ public class Solution {
         int current = 0;
         int max = 0;
         for(Integer i: flat){
-            System.out.println("Operating on: " + i);
-            System.out.println("Vmatrix = ");
             max = 0;;
             while ((current = vmatrix0[i].getLowestSetBit()) != -1){
                 vmatrix0[i] = vmatrix0[i].clearBit(current);
                 current = n + 1 - current;
-                System.out.println(rt[current]);
                 if(dpaths[current] + rt[current] > max){
                     max = dpaths[current] + rt[current];
 
@@ -302,9 +296,6 @@ public class Solution {
         current = 0;
         max = 0;
         for(Integer i: flat){
-            System.out.println("Operating on: " + i);
-            System.out.println("Vmatrix = ");
-            prBin(vmatrix1[i]);
             max = 0;;
             while ((current = vmatrix1[i].getLowestSetBit()) != -1){
                 vmatrix1[i] = vmatrix1[i].clearBit(current);
@@ -317,29 +308,31 @@ public class Solution {
             epaths[i] = max;
         }
 
-        Integer[][] functions = new Integer[n][3];
+        Integer[][] functions = new Integer[n+1][3];
         Blist<Integer[]> functionlist = new Blist<>();
 
-        for(int i=1; i<n; i++){
+        for(int i=1; i<n+1; i++){
             functions[i][0] = i;
             functions[i][1] = epaths[i];
             functions[i][2] = dpaths[i];
             badSortAdd(functionlist, functions[i]);
         }
+
         int time = 0 ;
         int fnNumber = 0;
         int m1t = 0;
         int m2t = 0;
         while(fnNumber != n-1){
-            System.out.println(fnNumber + " " + m1t);
+            System.out.println(functionlist.get(fnNumber)[0] + " " + m1t);
             m1t += rt[functionlist.get(fnNumber)[0]];
             fnNumber++;
             if(fnNumber != n-1) {
-                System.out.println(fnNumber + " " + m2t);
+                System.out.println(functionlist.get(fnNumber)[0] + " " + m2t);
                 m2t += rt[functionlist.get(fnNumber)[0]];
                 fnNumber++;
             }
         }
+        System.out.println(Math.max(m1t, m2t));
 
 
 
@@ -363,7 +356,7 @@ public class Solution {
 //            System.out.printf("%06d \n", Integer.parseInt(i.toString(2)));
 //
 
-        q.schedule_2();
+        q.schedule_x();
 
 
 
